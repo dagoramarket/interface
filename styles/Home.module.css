@@ -1,6 +1,6 @@
-.container {
+/* .container {
   padding: 0 2rem;
-}
+} */
 
 .main {
   min-height: 100vh;
@@ -48,6 +48,7 @@
 .title,
 .description {
   text-align: center;
+  background: #6f6f6f6;
 }
 
 .description {
@@ -57,7 +58,7 @@
 }
 
 .code {
-  background: #fafafa;
+  background: #f0f0f0;
   border-radius: 5px;
   padding: 0.75rem;
   font-size: 1.1rem;
@@ -66,15 +67,13 @@
 }
 
 .grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 1rem;
   max-width: 800px;
 }
 
 .card {
-  margin: 1rem;
   padding: 1.5rem;
   text-align: left;
   color: inherit;
@@ -82,7 +81,6 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
 }
 
 .card:hover,
@@ -111,6 +109,5 @@
 @media (max-width: 600px) {
   .grid {
     width: 100%;
-    flex-direction: column;
   }
 }
