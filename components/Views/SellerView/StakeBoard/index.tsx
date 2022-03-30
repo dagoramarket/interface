@@ -1,33 +1,66 @@
 import { useWeb3React } from "@web3-react/core";
+import { BigNumber, constants } from "ethers";
+import { formatEther, formatUnits } from "ethers/lib/utils";
+import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useMarketContext } from "../../../../libs/marketContext";
 import Card from "../../../Cards";
+import ConnectWallet from "../../ConnectWallet";
+import StakeModal, { ModalOpen } from "./StakeModal";
 
 type Props = {};
 
 export default function StakeBoard({}: Props) {
-  const { totalStake } = useMarketContext();
+  const { connected, totalStake, stake, unstake } = useMarketContext();
+  const [openModal, setOpenModal] = useState(ModalOpen.None);
+
+  if (!connected) {
+    return <ConnectWallet />;
+  }
+
+  function getFormatedStake() {
+    let res = formatEther(totalStake);
+    if (res.includes(".")) {
+      const parts = res.split(".");
+      return parts[0] + "." + parts[1].slice(0, 2);
+    }
+    return res;
+  }
 
   return (
-    <Card title="Stake">
-      <div className="grid grid-cols-5 bg-slate-300 justify-center rounded-xl h-36 items-center">
-        <h1 className="text-5xl col-start-2 col-span-3 text-center">
-          {totalStake}
-        </h1>
-        <span className="flex-none pl-3">DGR</span>
-      </div>
-      <div className="flex justify-evenly mt-3">
-        <Button className="rounded-xl w-24" variant="dark">
-          Stake
-        </Button>
-        <Button
-          className="rounded-xl w-24"
-          variant="dark"
-          disabled={totalStake == 0}
+    <>
+      <Card title="Stake">
+        <div
+          className="grid grid-cols-5 bg-slate-300 justify-center rounded-xl h-36 items-center"
+          title={formatUnits(totalStake, 18)}
         >
-          Unstake
-        </Button>
-      </div>
-    </Card>
+          <h1 className="text-5xl col-start-2 col-span-3 text-center">
+            {getFormatedStake()}
+          </h1>
+          <span className="flex-none pl-3">DGR</span>
+        </div>
+        <div className="flex justify-evenly mt-3">
+          <Button
+            className="rounded-xl w-24"
+            variant="dark"
+            onClick={() => setOpenModal(ModalOpen.Stake)}
+          >
+            Stake
+          </Button>
+          <Button
+            className="rounded-xl w-24"
+            variant="dark"
+            disabled={totalStake == constants.Zero}
+            onClick={() => setOpenModal(ModalOpen.Unstake)}
+          >
+            Unstake
+          </Button>
+        </div>
+      </Card>
+      <StakeModal
+        type={openModal}
+        onHide={() => setOpenModal(ModalOpen.None)}
+      />
+    </>
   );
 }

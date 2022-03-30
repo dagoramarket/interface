@@ -1,12 +1,12 @@
 import Head from "next/head";
+import { Col, Container, Row } from "react-bootstrap";
 import ConnectWallet from "../components/Views/ConnectWallet";
 import Navigation from "../components/Views/Navigation";
-import SellerView from "../components/Views/SellerView";
 import { getCategories } from "../utils/categories";
 
-type Props =  {
+type Props = {
   categories: string[];
-}
+};
 
 export function Test({ categories }: Props): JSX.Element {
   return (
@@ -20,7 +20,13 @@ export function Test({ categories }: Props): JSX.Element {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navigation categories={categories} />
-      <ConnectWallet />
+      <Container>
+        <Row className="justify-center">
+          <Col sm={6}>
+            <ConnectWallet />
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
