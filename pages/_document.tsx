@@ -5,10 +5,6 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/water.css@2/out/water.min.css"
-        />
       </Head>
       <body>
         <Main />

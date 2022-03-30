@@ -1,18 +1,14 @@
 import Head from "next/head";
-import SearchBar from "../components/SearchBar";
-import HomeView from "../components/Views/HomeView";
+import ConnectWallet from "../components/Views/ConnectWallet";
 import Navigation from "../components/Views/Navigation";
+import SellerView from "../components/Views/SellerView";
 import { getCategories } from "../utils/categories";
 
-type Props = {
+type Props =  {
   categories: string[];
-};
+}
 
-function Home({ categories }: Props): JSX.Element {
-  function onSearch(value: string) {
-    console.log(value);
-  }
-
+export function Test({ categories }: Props): JSX.Element {
   return (
     <>
       <Head>
@@ -23,16 +19,8 @@ function Home({ categories }: Props): JSX.Element {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <body>
-        <div className="flex flex-col h-full">
-          <Navigation categories={categories} />
-          <HomeView>
-            <SearchBar onSearch={onSearch}>
-              What are you looking for today?
-            </SearchBar>
-          </HomeView>
-        </div>
-      </body>
+      <Navigation categories={categories} />
+      <ConnectWallet />
     </>
   );
 }
@@ -42,4 +30,4 @@ export async function getStaticProps(): Promise<{ props: Props }> {
   return { props: { categories } };
 }
 
-export default Home;
+export default Test;

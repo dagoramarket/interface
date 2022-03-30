@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background: linear-gradient(
+      to right bottom,
+      rgb(77, 84, 209),
+      rgb(165, 28, 123) 50%,
+      rgb(238, 74, 55) 100%
+    )
+    center center;
+  background-attachment: fixed;
+  height: 100vh;
+}
+
 /* html,
 body {
   padding: 0;
