@@ -1,6 +1,6 @@
 import Head from "next/head";
-import SearchBar from "@/components/SearchBar";
-import HomeView from "@views/HomeView";
+import { Col, Container, Row } from "react-bootstrap";
+import ConnectWallet from "@views/ConnectWallet";
 import Navigation from "@views/Navigation";
 import { getCategories } from "@/utils/categories";
 
@@ -8,11 +8,7 @@ type Props = {
   categories: string[];
 };
 
-function Home({ categories }: Props): JSX.Element {
-  function onSearch(value: string) {
-    console.log(value);
-  }
-
+export function NewListing({ categories }: Props): JSX.Element {
   return (
     <>
       <Head>
@@ -23,16 +19,14 @@ function Home({ categories }: Props): JSX.Element {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <body>
-        <div className="flex flex-col h-full">
-          <Navigation categories={categories} />
-          <HomeView>
-            <SearchBar onSearch={onSearch}>
-              What are you looking for today?
-            </SearchBar>
-          </HomeView>
-        </div>
-      </body>
+      <Navigation categories={categories} />
+      <Container>
+        <Row className="justify-center">
+          <Col sm={6}>
+            <ConnectWallet />
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
@@ -42,4 +36,4 @@ export async function getStaticProps(): Promise<{ props: Props }> {
   return { props: { categories } };
 }
 
-export default Home;
+export default NewListing;

@@ -1,8 +1,8 @@
 import { parseEther } from "ethers/lib/utils";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Spinner } from "react-bootstrap";
-import { useMarketContext } from "../../../../../libs/marketContext";
-import Modal from "../../../../Modal";
+import { useMarketContext } from "@/libs/marketContext";
+import Modal from "@/components/Modal";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProviderRpcError } from "@web3-react/types";

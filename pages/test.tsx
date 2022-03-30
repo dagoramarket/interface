@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { Col, Container, Row } from "react-bootstrap";
-import ConnectWallet from "../components/Views/ConnectWallet";
-import Navigation from "../components/Views/Navigation";
-import { getCategories } from "../utils/categories";
+import ConnectWallet from "@views/ConnectWallet";
+import Navigation from "@views/Navigation";
+import { getCategories } from "@/utils/categories";
 
 type Props = {
   categories: string[];

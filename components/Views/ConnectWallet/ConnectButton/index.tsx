@@ -1,8 +1,8 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { metaMask } from "../../../../connectors/metamask";
-import { DEPLOYED_CHAIN_ID } from "../../../../libs/contract";
+import { metaMask } from "@/connectors/metamask";
+import { DEPLOYED_CHAIN_ID } from "@/libs/contract";
 
 type Props = {};
 

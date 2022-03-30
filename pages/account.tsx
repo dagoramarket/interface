@@ -1,7 +1,7 @@
 import Head from "next/head";
-import Navigation from "../components/Views/Navigation";
-import SellerView from "../components/Views/SellerView";
-import { getCategories } from "../utils/categories";
+import Navigation from "@views/Navigation";
+import SellerView from "@views/SellerView";
+import { getCategories } from "@/utils/categories";
 
 type Props =  {
   categories: string[];

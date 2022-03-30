@@ -1,5 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
-import Card from "../../Cards";
+import Card from "@/components/Cards";
 import ConnectButton from "./ConnectButton";
 
 type Props = {};
@@ -11,3 +10,4 @@ export default function ConnectWallet({}: Props) {
     </Card>
   );
 }
+''

@@ -1,11 +1,11 @@
+import Navbar from "@/components/Navbar";
+import NavDropdown from "@/components/Navbar/NavDropdown";
+import DropdownItem from "@/components/Navbar/NavDropdown/DropdownItem";
+import NavItem from "@/components/Navbar/NavItem";
+import NavLogo from "@/components/Navbar/NavLogo";
 import {
   faShoppingCart, faUser, faWallet
 } from "@fortawesome/free-solid-svg-icons";
-import Navbar from "../../Navbar";
-import NavDropdown from "../../Navbar/NavDropdown";
-import DropdownItem from "../../Navbar/NavDropdown/DropdownItem";
-import NavItem from "../../Navbar/NavItem";
-import NavLogo from "../../Navbar/NavLogo";
 
 
 type Props =  {

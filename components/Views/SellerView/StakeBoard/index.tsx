@@ -3,9 +3,9 @@ import { BigNumber, constants } from "ethers";
 import { formatEther, formatUnits } from "ethers/lib/utils";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useMarketContext } from "../../../../libs/marketContext";
-import Card from "../../../Cards";
-import ConnectWallet from "../../ConnectWallet";
+import { useMarketContext } from "@/libs/marketContext";
+import Card from "@/components/Cards";
+import ConnectWallet from "@views/ConnectWallet";
 import StakeModal, { ModalOpen } from "./StakeModal";
 
 type Props = {};

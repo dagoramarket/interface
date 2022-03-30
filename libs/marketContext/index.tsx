@@ -12,14 +12,14 @@ import {
 import {
   StakeManager,
   StakeManager__factory,
-} from "../../types/ethers-contracts";
-import { DagoraToken } from "../../types/ethers-contracts/DagoraToken";
-import { DagoraToken__factory } from "../../types/ethers-contracts/factories/DagoraToken__factory";
+} from "@/types/ethers-contracts";
+import { DagoraToken } from "@/types/ethers-contracts/DagoraToken";
+import { DagoraToken__factory } from "@/types/ethers-contracts/factories/DagoraToken__factory";
 import {
   DAGORA_TOKEN_ADDRESS,
   DEPLOYED_CHAIN_ID,
   STAKEMANAGER_ADDRESS,
-} from "../contract";
+} from "@/libs/contract";
 
 type MarketContextData = {
   totalStake: BigNumber;

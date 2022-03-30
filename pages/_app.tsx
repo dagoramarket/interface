@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
 import type { AppProps } from "next/app";
 import { config } from "@fortawesome/fontawesome-svg-core";
@@ -6,9 +6,9 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { SSRProvider } from "react-bootstrap";
 import { Web3ReactHooks, Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import { MarketProvider } from "../libs/marketContext";
+import { MarketProvider } from "@/libs/marketContext";
 import { MetaMask } from "@web3-react/metamask";
-import { metaMask, hooks as metaMaskHooks } from "../connectors/metamask";
+import { metaMask, hooks as metaMaskHooks } from "@/connectors/metamask";
 config.autoAddCss = false;
 
 function getLibrary(provider: any) {

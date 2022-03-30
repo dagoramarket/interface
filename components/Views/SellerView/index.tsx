@@ -1,5 +1,4 @@
 import { Col, Container, Row } from "react-bootstrap";
-import Card from "../../Cards";
 import ProductList from "./ProductList";
 import StakeBoard from "./StakeBoard";
 
