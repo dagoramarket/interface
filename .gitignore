@@ -1,3 +1,4 @@
 node_modules/
 .next/
-types/
+types/ethers-contracts
+.env
