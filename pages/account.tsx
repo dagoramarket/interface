@@ -3,11 +3,11 @@ import Navigation from "@views/Navigation";
 import SellerView from "@views/SellerView";
 import { getCategories } from "@/utils/categories";
 
-type Props =  {
+type Props = {
   categories: string[];
-}
+};
 
-export function Account({ categories }: Props): JSX.Element {
+export function Account({}: Props): JSX.Element {
   return (
     <>
       <Head>
@@ -18,7 +18,7 @@ export function Account({ categories }: Props): JSX.Element {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navigation categories={categories} />
+      <Navigation />
       <SellerView />
     </>
   );

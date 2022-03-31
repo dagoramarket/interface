@@ -1,6 +1,5 @@
 import { parseEther } from "ethers/lib/utils";
 
-export const MINIMUM_STAKE = parseEther("1000");
 // 5 MB
 export const MAX_FILE_SIZE = 5242880;
 export const IPFS_ENDPOINT = "https://dagora.infura-ipfs.io/ipfs/";

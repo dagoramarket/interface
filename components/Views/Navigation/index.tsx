@@ -3,16 +3,15 @@ import NavDropdown from "@/components/Navbar/NavDropdown";
 import DropdownItem from "@/components/Navbar/NavDropdown/DropdownItem";
 import NavItem from "@/components/Navbar/NavItem";
 import NavLogo from "@/components/Navbar/NavLogo";
+import { useMarketContext } from "@/libs/marketContext";
 import {
-  faShoppingCart, faUser, faWallet
+  faShoppingCart,
+  faUser,
+  faWallet
 } from "@fortawesome/free-solid-svg-icons";
 
-
-type Props =  {
-  categories: string[];
-}
-
-export default function Navigation({ categories }: Props): JSX.Element {
+export default function Navigation(): JSX.Element {
+  const { categories } = useMarketContext();
   return (
     <Navbar>
       <NavLogo href="/">Dagora Market</NavLogo>
@@ -21,7 +20,9 @@ export default function Navigation({ categories }: Props): JSX.Element {
           <DropdownItem key={i}>{category}</DropdownItem>
         ))}
       </NavDropdown>
-      <NavItem href="/account" icon={faUser}>Account</NavItem>
+      <NavItem href="/account" icon={faUser}>
+        Account
+      </NavItem>
       <NavItem icon={faWallet}>Wallet</NavItem>
       <NavItem icon={faShoppingCart}>Cart</NavItem>
     </Navbar>

@@ -1,17 +1,16 @@
-import { useWeb3React } from "@web3-react/core";
-import { BigNumber, constants } from "ethers";
+import Card from "@/components/Cards";
+import { useMarketContext } from "@/libs/marketContext";
+import ConnectWallet from "@views/ConnectWallet";
+import { constants } from "ethers";
 import { formatEther, formatUnits } from "ethers/lib/utils";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useMarketContext } from "@/libs/marketContext";
-import Card from "@/components/Cards";
-import ConnectWallet from "@views/ConnectWallet";
 import StakeModal, { ModalOpen } from "./StakeModal";
 
 type Props = {};
 
 export default function StakeBoard({}: Props) {
-  const { connected, totalStake, stake, unstake } = useMarketContext();
+  const { connected, totalStake } = useMarketContext();
   const [openModal, setOpenModal] = useState(ModalOpen.None);
 
   if (!connected) {

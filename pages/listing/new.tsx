@@ -1,14 +1,16 @@
 import NewListing from "@/components/Views/NewListing";
+import { useMarketContext } from "@/libs/marketContext";
 import { getCategories } from "@/utils/categories";
 import Navigation from "@views/Navigation";
 import Head from "next/head";
+import { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
 type Props = {
   categories: string[];
 };
 
-export function NewListingPage({ categories }: Props): JSX.Element {
+export function NewListingPage({}: Props): JSX.Element {
   return (
     <>
       <Head>
@@ -19,7 +21,7 @@ export function NewListingPage({ categories }: Props): JSX.Element {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navigation categories={categories} />
+      <Navigation />
       <Container className="pb-10">
         <Row className="justify-center">
           <Col sm={8}>

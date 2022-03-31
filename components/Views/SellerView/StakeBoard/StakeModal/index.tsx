@@ -1,5 +1,4 @@
 import Modal from "@/components/Modal";
-import { MINIMUM_STAKE } from "@/constants";
 import { useMarketContext } from "@/libs/marketContext";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,7 +34,7 @@ interface ProviderError {
 export default function StakeModal({ type, onHide }: Props) {
   const [val, setVal] = useState("0");
   const [error, setError] = useState("");
-  const { totalStake, stake, unstake } = useMarketContext();
+  const { minimumStake, stake, unstake } = useMarketContext();
   const [txState, setTxState] = useState(TxState.None);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -85,7 +84,9 @@ export default function StakeModal({ type, onHide }: Props) {
                 setVal(e.target.validity.valid ? e.target.value : val);
               }}
             ></input>
-            <p className="text-gray-700">Minimum Amount: {formatEther(MINIMUM_STAKE)} DGR</p>
+            <p className="text-gray-700">
+              Minimum Amount: {formatEther(minimumStake)} DGR
+            </p>
             {error && <p className="text-red-500">{error}</p>}
             <div className="w-full flex justify-evenly mt-3">
               <Button

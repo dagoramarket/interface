@@ -8,7 +8,7 @@ type Props = {
   categories: string[];
 };
 
-function Home({ categories }: Props): JSX.Element {
+function Home({}: Props): JSX.Element {
   function onSearch(value: string) {
     console.log(value);
   }
@@ -25,7 +25,7 @@ function Home({ categories }: Props): JSX.Element {
       </Head>
       <body>
         <div className="flex flex-col h-full">
-          <Navigation categories={categories} />
+          <Navigation />
           <HomeView>
             <SearchBar onSearch={onSearch}>
               What are you looking for today?

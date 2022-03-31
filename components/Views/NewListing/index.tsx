@@ -3,16 +3,13 @@ import SelectInput from "@/components/Form/SelectInput";
 import TagsInput from "@/components/Form/TagsInput";
 import TextAreaInput from "@/components/Form/TextAreaInput";
 import TextInput from "@/components/Form/TextInput";
-import { ENABLED_TOKENS, IPFS_ENDPOINT, MAX_FILE_SIZE } from "@/constants";
 import { useInput } from "@/libs/hooks/useInput";
 import { useSelect } from "@/libs/hooks/useSelect";
 import { useMarketContext } from "@/libs/marketContext";
-import { uploadFileToIpfs, uploadFileToTheGraph } from "@/utils/ipfs";
+import { uploadFileToTheGraph } from "@/utils/ipfs";
 import { buildListing } from "@/utils/listing";
-import { parseUnits } from "ethers/lib/utils";
-import { useEffect, useState } from "react";
-import { Button, Form, FormControl, Image, InputGroup } from "react-bootstrap";
-import { InputTags } from "react-bootstrap-tagsinput";
+import { useState } from "react";
+import { Button } from "react-bootstrap";
 import ImageUpload from "./ImageUpload";
 import PriceSelector from "./PriceSelector";
 
@@ -39,11 +36,11 @@ export default function NewListing({}: Props) {
   const { value: category } = categoryInput;
 
   const priceTokenInput = useSelect("");
-  const { value: priceToken, setValue: setPriceToken } = priceTokenInput;
+  const { value: priceToken } = priceTokenInput;
 
   const [tags, setTags] = useState<string[]>([]);
   const [tokens, setTokens] = useState<string[]>([]);
-  const { createListing } = useMarketContext();
+  const { createListing, categories, hasMinimumStake } = useMarketContext();
 
   async function submit() {
     if (!image) return;
@@ -78,10 +75,9 @@ export default function NewListing({}: Props) {
         />
         <ImageUpload image={image} setImage={setImage} />
 
-        {/* TODO: Load categories on demand */}
         <SelectInput
           title="Category"
-          options={["Games"]}
+          options={categories}
           selectInput={categoryInput}
         />
 
@@ -95,8 +91,8 @@ export default function NewListing({}: Props) {
           setPrice={setPrice}
           priceTokenSelect={priceTokenInput}
         />
-        <Button variant="success" onClick={submit}>
-          Create Lisiting
+        <Button variant="success" onClick={submit} disabled={!hasMinimumStake}>
+          {hasMinimumStake ? "Create Lisiting" : "You need to stake tokens"}
         </Button>
       </div>
     </Card>

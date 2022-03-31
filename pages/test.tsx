@@ -8,7 +8,7 @@ type Props = {
   categories: string[];
 };
 
-export function Test({ categories }: Props): JSX.Element {
+export function Test({}: Props): JSX.Element {
   return (
     <>
       <Head>
@@ -19,7 +19,7 @@ export function Test({ categories }: Props): JSX.Element {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navigation categories={categories} />
+      <Navigation />
       <Container>
         <Row className="justify-center">
           <Col sm={6}>

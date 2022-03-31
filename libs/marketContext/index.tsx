@@ -3,13 +3,13 @@ import {
   DAGORA_TOKEN_ADDRESS,
   DEPLOYED_CHAIN_ID,
   LISTINGMANAGER_ADDRESS,
-  STAKEMANAGER_ADDRESS
+  STAKEMANAGER_ADDRESS,
 } from "@/libs/contract";
 import {
   ListingManager,
   ListingManager__factory,
   StakeManager,
-  StakeManager__factory
+  StakeManager__factory,
 } from "@/types/ethers-contracts";
 import { DagoraToken } from "@/types/ethers-contracts/DagoraToken";
 import { DagoraToken__factory } from "@/types/ethers-contracts/factories/DagoraToken__factory";
@@ -21,16 +21,20 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState
+  useState,
 } from "react";
 
 type MarketContextData = {
   totalStake: BigNumber;
   account: string | null | undefined;
   connected: boolean;
+  categories: string[];
+  hasMinimumStake: boolean;
+  minimumStake: BigNumber;
   stake: (amount: BigNumber) => Promise<void>;
   unstake: (amount: BigNumber) => Promise<void>;
   createListing: (ipfsHash: string) => Promise<void>;
+  updateCategories: (categories: string[]) => void;
 };
 
 const MarketContext = createContext({} as MarketContextData);
@@ -42,10 +46,19 @@ export const MarketProvider: React.FC = ({ children }) => {
   const [stakeManager, setStakeManager] = useState<StakeManager>();
   const [listingManager, setListingManager] = useState<ListingManager>();
   const [dgr, setDGR] = useState<DagoraToken>();
-
+  const [categories, setCategories] = useState<string[]>([]);
+  const [hasMinimumStake, setHasMinimumStake] = useState(false);
+  const [minimumStake, setMinimumStake] = useState(constants.MaxUint256);
   useEffect(() => {
     void metaMask.connectEagerly();
   }, []);
+
+  const updateMinimumStake = useCallback(async () => {
+    if (!listingManager) return;
+
+    const minimumStake = await listingManager.MINIMUM_STAKED_TOKEN();
+    setMinimumStake(minimumStake);
+  }, [listingManager]);
 
   useEffect(() => {
     if (chainId === undefined) return;
@@ -75,8 +88,13 @@ export const MarketProvider: React.FC = ({ children }) => {
   }, [account, stakeManager]);
 
   useEffect(() => {
+    setHasMinimumStake(totalStake.gte(minimumStake));
+  }, [totalStake, minimumStake]);
+
+  useEffect(() => {
     updateTotalStake();
-  }, [updateTotalStake]);
+    updateMinimumStake();
+  }, [updateTotalStake, updateMinimumStake]);
 
   useEffect(() => {
     setConnected(isActive && chainId === DEPLOYED_CHAIN_ID);
@@ -118,7 +136,7 @@ export const MarketProvider: React.FC = ({ children }) => {
       cashbackPercentage: 0,
       expiration: Math.floor(new Date().getTime() / 1000) + 30 * 86400, // 30 days
     };
-    console.log(listing)
+    console.log(listing);
     const tx = await listingManager.createListing(listing, 1);
     await tx.wait();
   }
@@ -129,9 +147,13 @@ export const MarketProvider: React.FC = ({ children }) => {
         account,
         totalStake,
         connected,
+        categories,
+        hasMinimumStake,
+        minimumStake,
         stake,
         unstake,
-        createListing
+        createListing,
+        updateCategories: setCategories,
       }}
     >
       {children}
