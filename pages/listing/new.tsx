@@ -1,14 +1,14 @@
+import NewListing from "@/components/Views/NewListing";
+import { getCategories } from "@/utils/categories";
+import Navigation from "@views/Navigation";
 import Head from "next/head";
 import { Col, Container, Row } from "react-bootstrap";
-import ConnectWallet from "@views/ConnectWallet";
-import Navigation from "@views/Navigation";
-import { getCategories } from "@/utils/categories";
 
 type Props = {
   categories: string[];
 };
 
-export function NewListing({ categories }: Props): JSX.Element {
+export function NewListingPage({ categories }: Props): JSX.Element {
   return (
     <>
       <Head>
@@ -20,10 +20,10 @@ export function NewListing({ categories }: Props): JSX.Element {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navigation categories={categories} />
-      <Container>
+      <Container className="pb-10">
         <Row className="justify-center">
-          <Col sm={6}>
-            <ConnectWallet />
+          <Col sm={8}>
+            <NewListing />
           </Col>
         </Row>
       </Container>
@@ -36,4 +36,4 @@ export async function getStaticProps(): Promise<{ props: Props }> {
   return { props: { categories } };
 }
 
-export default NewListing;
+export default NewListingPage;

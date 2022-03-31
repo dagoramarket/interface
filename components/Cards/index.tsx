@@ -11,7 +11,7 @@ export default function Card({ title, children }: Props): JSX.Element {
     <BSCard>
       <BSCard.Body>
         <BSCard.Title>{title}</BSCard.Title>
-        <BSCard.Text>{children}</BSCard.Text>
+        {children}
       </BSCard.Body>
     </BSCard>
   );

@@ -1,11 +1,12 @@
-import { parseEther } from "ethers/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Spinner } from "react-bootstrap";
-import { useMarketContext } from "@/libs/marketContext";
 import Modal from "@/components/Modal";
+import { MINIMUM_STAKE } from "@/constants";
+import { useMarketContext } from "@/libs/marketContext";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProviderRpcError } from "@web3-react/types";
+import { formatEther, parseEther } from "ethers/lib/utils";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Spinner } from "react-bootstrap";
 
 export enum ModalOpen {
   Stake = "Stake",
@@ -84,6 +85,7 @@ export default function StakeModal({ type, onHide }: Props) {
                 setVal(e.target.validity.valid ? e.target.value : val);
               }}
             ></input>
+            <p className="text-gray-700">Minimum Amount: {formatEther(MINIMUM_STAKE)} DGR</p>
             {error && <p className="text-red-500">{error}</p>}
             <div className="w-full flex justify-evenly mt-3">
               <Button
