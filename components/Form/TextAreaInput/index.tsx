@@ -1,27 +1,14 @@
 import { BindInput } from "@/libs/hooks/useInput";
 import { Form } from "react-bootstrap";
+import TextInput from "../TextInput";
 
 type Props = {
-    title: string,
-    placeholder: string,
-    textInput: BindInput;
+  title: string;
+  placeholder: string;
+  textInput: BindInput;
+  validate: (value: string) => { valid: boolean; error: string };
 };
 
-export default function TextAreaInput({ title, placeholder, textInput }: Props) {
-  return (
-    <Form.Group>
-      <Form.Label>{title}</Form.Label>
-      <Form.Control
-        as="textarea"
-        isInvalid={false}
-        isValid={false}
-        placeholder={placeholder}
-        {...textInput}
-      />
-      <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-      <Form.Control.Feedback type="invalid">
-        Thats an error
-      </Form.Control.Feedback>
-    </Form.Group>
-  );
+export default function TextAreaInput(props: Props) {
+  return <TextInput {...props} type="textarea" />;
 }

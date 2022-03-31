@@ -1,4 +1,5 @@
 import Modal from "@/components/Modal";
+import TxModal, { ProviderError, TxState } from "@/components/Modal/TxModal";
 import { useMarketContext } from "@/libs/marketContext";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,37 +13,23 @@ export enum ModalOpen {
   Unstake = "Unstake",
   None = "None",
 }
-
-enum TxState {
-  None = "None",
-  Pending = "Pending",
-  Success = "Success",
-  Error = "Error",
-}
-
 type Props = {
   type: ModalOpen;
   onHide: () => void;
 };
 
-interface ProviderError {
-  code: number;
-  message: string;
-  data: string;
-}
-
 export default function StakeModal({ type, onHide }: Props) {
   const [val, setVal] = useState("0");
-  const [error, setError] = useState("");
   const { minimumStake, stake, unstake } = useMarketContext();
   const [txState, setTxState] = useState(TxState.None);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (type !== ModalOpen.None) {
       setVal("0");
       setTxState(TxState.None);
-      setError("");
+    setError("");
     }
   }, [type]);
 
@@ -71,69 +58,35 @@ export default function StakeModal({ type, onHide }: Props) {
     }
   }
 
-  function content() {
-    switch (txState) {
-      case TxState.None:
-        return (
-          <>
-            <input
-              pattern="[0-9]*\.?[0-9]{0,18}"
-              value={val}
-              className="bg-slate-400 rounded w-full text-6xl text-center"
-              onChange={(e) => {
-                setVal(e.target.validity.valid ? e.target.value : val);
-              }}
-            ></input>
-            <p className="text-gray-700">
-              Minimum Amount: {formatEther(minimumStake)} DGR
-            </p>
-            {error && <p className="text-red-500">{error}</p>}
-            <div className="w-full flex justify-evenly mt-3">
-              <Button
-                className="rounded-xl w-24"
-                variant="dark"
-                onClick={onHide}
-              >
-                Cancel
-              </Button>
-              <Button
-                className="rounded-xl w-24"
-                variant="dark"
-                onClick={onSubmit}
-              >
-                Confirm
-              </Button>
-            </div>
-          </>
-        );
-      case TxState.Pending:
-        return (
-          <Spinner
-            animation="border"
-            role="status"
-            style={{ width: "10rem", height: "10rem" }}
-          >
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        );
-      case TxState.Success:
-        return <FontAwesomeIcon icon={faCheck} size="10x" />;
-      case TxState.Error:
-        return (
-          <>
-            <FontAwesomeIcon icon={faXmark} size="10x" />
-            {error && <p className="text-red-500">{error}</p>}
-          </>
-        );
-    }
-  }
-
   return (
-    <Modal show={type !== ModalOpen.None} onHide={onHide}>
-      <div className="flex flex-col align-items-center mx-auto gap-3">
-        <h1>{type}</h1>
-        {content()}
+    <TxModal
+      title={type}
+      show={type !== ModalOpen.None}
+      onHide={onHide}
+      txState={txState}
+      setTxState={setTxState}
+      error={error}
+    >
+      <input
+        pattern="[0-9]*\.?[0-9]{0,18}"
+        value={val}
+        className="bg-slate-400 rounded w-full text-6xl text-center"
+        onChange={(e) => {
+          setVal(e.target.validity.valid ? e.target.value : val);
+        }}
+      ></input>
+      <p className="text-gray-700">
+        Minimum Amount: {formatEther(minimumStake)} DGR
+      </p>
+      {error && <p className="text-red-500">{error}</p>}
+      <div className="w-full flex justify-evenly mt-3">
+        <Button className="rounded-xl w-24" variant="dark" onClick={onHide}>
+          Cancel
+        </Button>
+        <Button className="rounded-xl w-24" variant="dark" onClick={onSubmit}>
+          Confirm
+        </Button>
       </div>
-    </Modal>
+    </TxModal>
   );
 }
