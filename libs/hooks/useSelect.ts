@@ -3,6 +3,7 @@ import { useState } from "react";
 export type BindSelect = {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  setValue: (value: string) => void;
 };
 
 export function useSelect(initialValue: string): BindSelect {
@@ -12,5 +13,5 @@ export function useSelect(initialValue: string): BindSelect {
     setValue(event.target.value);
   };
 
-  return { value, onChange };
+  return { value, onChange , setValue };
 }

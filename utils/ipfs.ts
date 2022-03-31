@@ -17,6 +17,13 @@ const thegraph = create({
 });
 
 export async function uploadFileToIpfs(content: ArrayBuffer): Promise<string> {
+  const ipfsFile = await client.add({
+    content,
+  });
+  return ipfsFile.path;
+}
+
+export async function uploadFileToTheGraph(content: ArrayBuffer): Promise<string> {
   await thegraph.add(content);
   const ipfsFile = await client.add({
     content,

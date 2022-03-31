@@ -3,6 +3,7 @@ import { useState } from "react";
 export type BindInput = {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue: (value: string) => void;
 };
 
 export function useInput(initialValue: string): BindInput {
@@ -12,5 +13,5 @@ export function useInput(initialValue: string): BindInput {
     setValue(event.target.value);
   };
 
-  return { value, onChange };
+  return { value, onChange, setValue };
 }
