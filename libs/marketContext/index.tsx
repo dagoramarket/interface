@@ -1,25 +1,28 @@
+import { metaMask } from "@/connectors/metamask";
+import {
+  DAGORA_TOKEN_ADDRESS,
+  DEPLOYED_CHAIN_ID,
+  LISTINGMANAGER_ADDRESS,
+  STAKEMANAGER_ADDRESS
+} from "@/libs/contract";
+import {
+  ListingManager,
+  ListingManager__factory,
+  StakeManager,
+  StakeManager__factory
+} from "@/types/ethers-contracts";
+import { DagoraToken } from "@/types/ethers-contracts/DagoraToken";
+import { DagoraToken__factory } from "@/types/ethers-contracts/factories/DagoraToken__factory";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import { BigNumber, constants, utils } from "ethers";
-import { formatUnits } from "ethers/lib/utils";
+import { BigNumber, constants } from "ethers";
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useState
 } from "react";
-import {
-  StakeManager,
-  StakeManager__factory,
-} from "@/types/ethers-contracts";
-import { DagoraToken } from "@/types/ethers-contracts/DagoraToken";
-import { DagoraToken__factory } from "@/types/ethers-contracts/factories/DagoraToken__factory";
-import {
-  DAGORA_TOKEN_ADDRESS,
-  DEPLOYED_CHAIN_ID,
-  STAKEMANAGER_ADDRESS,
-} from "@/libs/contract";
 
 type MarketContextData = {
   totalStake: BigNumber;
@@ -27,6 +30,7 @@ type MarketContextData = {
   connected: boolean;
   stake: (amount: BigNumber) => Promise<void>;
   unstake: (amount: BigNumber) => Promise<void>;
+  createListing: (ipfsHash: string) => Promise<void>;
 };
 
 const MarketContext = createContext({} as MarketContextData);
@@ -36,7 +40,12 @@ export const MarketProvider: React.FC = ({ children }) => {
   const { isActive, account, chainId, provider } = useWeb3React();
   const [totalStake, setTotalStake] = useState(BigNumber.from(0));
   const [stakeManager, setStakeManager] = useState<StakeManager>();
+  const [listingManager, setListingManager] = useState<ListingManager>();
   const [dgr, setDGR] = useState<DagoraToken>();
+
+  useEffect(() => {
+    void metaMask.connectEagerly();
+  }, []);
 
   useEffect(() => {
     if (chainId === undefined) return;
@@ -49,7 +58,12 @@ export const MarketProvider: React.FC = ({ children }) => {
       DAGORA_TOKEN_ADDRESS,
       provider.getSigner()
     );
+    const listingManager = ListingManager__factory.connect(
+      LISTINGMANAGER_ADDRESS,
+      provider.getSigner()
+    );
     setStakeManager(stakeManager);
+    setListingManager(listingManager);
     setDGR(dagoraToken);
   }, [chainId, provider]);
 
@@ -80,7 +94,7 @@ export const MarketProvider: React.FC = ({ children }) => {
     }
     const stakeTx = await stakeManager.stakeTokens(amount);
     await stakeTx.wait();
-    updateTotalStake();
+    await updateTotalStake();
   }
 
   async function unstake(amount: BigNumber) {
@@ -90,7 +104,23 @@ export const MarketProvider: React.FC = ({ children }) => {
 
     const unstakeTx = await stakeManager.unstakeTokens(amount);
     await unstakeTx.wait();
-    updateTotalStake();
+    await updateTotalStake();
+  }
+
+  async function createListing(ipfsHash: string) {
+    if (!listingManager) return;
+    if (!account) return;
+    const listing = {
+      ipfsHash,
+      seller: account,
+      commissionPercentage: 0,
+      warranty: 0,
+      cashbackPercentage: 0,
+      expiration: Math.floor(new Date().getTime() / 1000) + 30 * 86400, // 30 days
+    };
+    console.log(listing)
+    const tx = await listingManager.createListing(listing, 1);
+    await tx.wait();
   }
 
   return (
@@ -101,6 +131,7 @@ export const MarketProvider: React.FC = ({ children }) => {
         connected,
         stake,
         unstake,
+        createListing
       }}
     >
       {children}

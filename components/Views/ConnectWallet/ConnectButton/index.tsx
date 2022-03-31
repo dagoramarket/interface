@@ -1,17 +1,13 @@
-import { useWeb3React } from "@web3-react/core";
-import React, { useEffect } from "react";
-import { Button } from "react-bootstrap";
 import { metaMask } from "@/connectors/metamask";
 import { DEPLOYED_CHAIN_ID } from "@/libs/contract";
+import { useWeb3React } from "@web3-react/core";
+import React from "react";
+import { Button } from "react-bootstrap";
 
 type Props = {};
 
 export default function ConnectButton({}: Props) {
   const { isActive, chainId } = useWeb3React();
-
-  useEffect(() => {
-    void metaMask.connectEagerly();
-  }, []);
 
   function activate() {
     metaMask.activate(DEPLOYED_CHAIN_ID);
