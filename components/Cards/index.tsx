@@ -3,7 +3,7 @@ import { Card as BSCard } from "react-bootstrap";
 
 type Props = {
   title: string;
-  children: string | JSX.Element | JSX.Element[];
+  children?: string | JSX.Element | JSX.Element[];
 };
 
 export default function Card({ title, children }: Props): JSX.Element {

@@ -1,5 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
-import ProductList from "./ProductList";
+import ProductView from "./ProductView";
 import StakeBoard from "./StakeBoard";
 
 type Props = {};
@@ -9,7 +9,7 @@ export default function SellerView({}: Props) {
     <Container>
       <Row>
         <Col sm={8}>
-          <ProductList />
+          <ProductView />
         </Col>
         <Col sm={4}>
           <StakeBoard />
