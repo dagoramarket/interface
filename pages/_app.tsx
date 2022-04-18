@@ -1,6 +1,7 @@
 import { hooks as metaMaskHooks, metaMask } from "@/connectors/metamask";
 import { MarketProvider } from "@/libs/marketContext";
 import "@/styles/globals.css";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Web3ReactHooks, Web3ReactProvider } from "@web3-react/core";
@@ -13,12 +14,19 @@ config.autoAddCss = false;
 
 const connectors: [MetaMask, Web3ReactHooks][] = [[metaMask, metaMaskHooks]];
 
+const client = new ApolloClient({
+  uri: "https://api.thegraph.com/subgraphs/name/flametuner/dagora",
+  cache: new InMemoryCache(),
+});
+
 function MyApp(pageProps: AppProps) {
   return (
     <SSRProvider>
       <Web3ReactProvider connectors={connectors}>
         <MarketProvider>
-          <Container {...pageProps} />
+          <ApolloProvider client={client}>
+            <Container {...pageProps} />
+          </ApolloProvider>
         </MarketProvider>
       </Web3ReactProvider>
     </SSRProvider>

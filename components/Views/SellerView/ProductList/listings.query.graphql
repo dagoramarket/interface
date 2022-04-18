@@ -1,0 +1,12 @@
+query listings($seller: String!, $first: Int, $skip: Int){
+  listings(first: $first, skip: $skip  where: { seller:  $seller}) {
+    id
+    title
+    description
+    price
+    images
+    commissionPercentage
+    cashbackPercentage
+    expiration
+  }
+}
