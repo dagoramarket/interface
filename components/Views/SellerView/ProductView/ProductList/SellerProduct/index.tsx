@@ -4,13 +4,15 @@ import { Card, Col, Image, Row } from "react-bootstrap";
 
 interface Listing {
   id: string;
-  title?: string | null | undefined;
-  description?: string | null | undefined;
+  title: string;
+  description: string;
   price: any;
-  images: string[];
+  media: string[];
   commissionPercentage: any;
   cashbackPercentage: any;
-  expiration: number;
+  expirationBlock: any;
+  quantity: any;
+  allowedTokens: any[];
 }
 
 type Props = {
@@ -23,10 +25,12 @@ export default function SellerProduct({ listing }: Props) {
       <Card.Header className="text-xs text-muted">{listing.id}</Card.Header>
       <Row className="g-0">
         <Col md={3}>
-          <Image
-            src={IPFS_ENDPOINT + listing.images[0].replace("ipfs://", "")}
-            alt={`Image for listing ${listing.id}`}
-          ></Image>
+          {listing.media.length > 0 && (
+            <Image
+              src={IPFS_ENDPOINT + listing.media[0].replace("ipfs://", "")}
+              alt={`Image for listing ${listing.id}`}
+            />
+          )}
         </Col>
         <Col md={9}>
           <Card.Body>
@@ -34,7 +38,8 @@ export default function SellerProduct({ listing }: Props) {
             <Card.Text>{listing.description}</Card.Text>
             <Card.Text>
               <small className="text-muted">
-                Expires at {convertToReadableDate(listing.expiration)}
+                Expires at block #
+                {listing.expirationBlock}
               </small>
             </Card.Text>
           </Card.Body>

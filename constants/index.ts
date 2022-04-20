@@ -4,6 +4,8 @@ import { parseEther } from "ethers/lib/utils";
 export const MAX_FILE_SIZE = 5242880;
 export const IPFS_ENDPOINT = "https://dagora.infura-ipfs.io/ipfs/";
 
+export const BLOCK_TIME = 3; // 3 seconds
+
 export type Token = {
   name: string;
   address: string;

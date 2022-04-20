@@ -24,13 +24,13 @@ export default function ProductList({ account }: Props) {
   });
 
   useEffect(() => {
-    if (data?.listings.length === 0 && page > 0) {
+    if (data?.activeListings.length === 0 && page > 0) {
       setMaxPage(page - 1);
       setPage(page - 1);
     }
   }, [data, setPage, page]);
 
-  const productList = data?.listings;
+  const productList = data?.activeListings;
 
   if (!productList || productList.length === 0) {
     return (

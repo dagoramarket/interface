@@ -1,14 +1,14 @@
 query sellerListings($seller: String!, $first: Int, $skip: Int){
-  listings(first: $first, skip: $skip  where: { seller:  $seller}) {
+  activeListings(first: $first, skip: $skip  where: { seller:  $seller}) {
     id
     title
     description
     price
-    images
+    media
     commissionPercentage
     cashbackPercentage
-    expiration
+    expirationBlock
     quantity
-    allowed_tokens
+    allowedTokens
   }
 }

@@ -1,4 +1,5 @@
 import { metaMask } from "@/connectors/metamask";
+import { BLOCK_TIME } from "@/constants";
 import {
   DAGORA_TOKEN_ADDRESS,
   DEPLOYED_CHAIN_ID,
@@ -128,13 +129,18 @@ export const MarketProvider: React.FC = ({ children }) => {
   async function createListing(ipfsHash: string) {
     if (!listingManager) return;
     if (!account) return;
+    if (!provider) return;
+
+    const bn = await provider.getBlockNumber();
+    const blocks = Math.floor((60 * 60 * 24 * 30) / BLOCK_TIME); // 30 days in blocks
+    
     const listing = {
       ipfsHash,
       seller: account,
       commissionPercentage: 0,
       warranty: 0,
       cashbackPercentage: 0,
-      expiration: Math.floor(new Date().getTime() / 1000) + 30 * 86400, // 30 days
+      expirationBlock: bn + blocks,
     };
     console.log(listing);
     const tx = await listingManager.createListing(listing, 1);

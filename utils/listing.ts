@@ -17,8 +17,8 @@ export function buildListing(
     description: description,
     categories: [category],
     tags: tags,
-    images: [`ipfs://${image}`],
-    allowed_tokens: tokens
+    media: [`ipfs://${image}`],
+    allowedTokens: tokens
       .sort((x, y) => (x == priceToken ? -1 : y == priceToken ? 1 : 0))
       .map((token) => ENABLED_TOKENS[token].address),
     price: parseUnits(price, ENABLED_TOKENS[priceToken].decimals).toString(),
