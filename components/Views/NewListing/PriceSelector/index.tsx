@@ -8,7 +8,7 @@ type Props = {
   setTokens: (tokens: string[]) => void;
   tokens: string[];
   priceToken: string;
-  priceTokenSelect: BindSelect;
+  setPriceToken: (token: string) => void;
   price: string;
   setPrice: (price: string) => void;
 };
@@ -17,17 +17,16 @@ export default function PriceSelector({
   setTokens,
   tokens,
   priceToken,
-  priceTokenSelect,
+  setPriceToken,
   price,
   setPrice,
 }: Props) {
-    
   useEffect(() => {
     if (tokens.filter((t) => t === priceToken).length === 0) {
-      priceTokenSelect.setValue("");
+      setPriceToken("");
       setPrice("");
     }
-  }, [tokens, priceToken, priceTokenSelect, setPrice]);
+  }, [tokens, priceToken, setPriceToken, setPrice]);
 
   return (
     <>
@@ -68,7 +67,9 @@ export default function PriceSelector({
           />
           <Form.Select
             aria-label="Default select example"
-            {...priceTokenSelect}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setPriceToken(e.target.value)
+            }
           >
             <option value="">Choose one</option>
             {tokens.map((token, i) => (

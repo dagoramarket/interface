@@ -1,42 +1,33 @@
 import { BindSelect } from "@/libs/hooks/useSelect";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Form } from "react-bootstrap";
 
 type Props = {
   title: string;
   options: string[];
-  selectInput: BindSelect;
-  validate: (value: string) => { valid: boolean; error: string };
+  value: string;
+  error?: string;
+  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  onBlur: () => void;
 };
-
-enum ValidationState {
-  Valid,
-  Invalid,
-  Pending,
-}
 
 export default function SelectInput({
   title,
-  selectInput,
+  value,
+  onChange,
+  onBlur,
   options,
-  validate,
+  error,
 }: Props) {
-  const [state, setState] = useState(ValidationState.Pending);
-  const [error, setError] = useState("");
-
   return (
     <Form.Group>
       <Form.Label>{title}</Form.Label>
       <Form.Select
         aria-label="Default select example"
-        {...selectInput}
-        isInvalid={state == ValidationState.Invalid}
-        isValid={state == ValidationState.Valid}
-        onBlur={() => {
-          const { valid, error } = validate(selectInput.value);
-          setState(valid ? ValidationState.Valid : ValidationState.Invalid);
-          setError(error);
-        }}
+        onChange={onChange}
+        value={value}
+        onBlur={onBlur}
+        isInvalid={error !== undefined}
       >
         <option value="">Choose one</option>
         {options.map((option, i) => (

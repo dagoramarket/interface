@@ -1,47 +1,42 @@
-import { BindInput } from "@/libs/hooks/useInput";
-import { useState } from "react";
+import { ChangeEvent } from "react";
 import { Form } from "react-bootstrap";
+import { FieldError } from "react-hook-form";
 
 type Props = {
   title: string;
   placeholder: string;
-  textInput: BindInput;
-  validate: (value: string) => { valid: boolean; error: string };
+  value: string;
+  onChange: (value: ChangeEvent<HTMLInputElement>) => void;
+  onBlur: () => void;
+  error?: FieldError;
   type?: undefined | "textarea";
 };
 
 enum ValidationState {
   Valid,
   Invalid,
-  Pending
+  Pending,
 }
 
 export default function TextInput({
   title,
   placeholder,
-  textInput,
-  validate,
-  type
+  onBlur,
+  onChange,
+  error,
+  type,
 }: Props) {
-  const [state, setState] = useState(ValidationState.Pending);
-  const [error, setError] = useState("");
-
   return (
     <Form.Group>
       <Form.Label>{title}</Form.Label>
       <Form.Control
         as={type}
-        isInvalid={state == ValidationState.Invalid}
-        isValid={state == ValidationState.Valid}
         placeholder={placeholder}
-        onBlur={() => {
-          const { valid, error } = validate(textInput.value);
-          setState(valid ? ValidationState.Valid : ValidationState.Invalid);
-          setError(error);
-        }}
-        {...textInput}
+        onBlur={onBlur}
+        onChange={onChange}
+        isInvalid={error?.message !== undefined}
       />
-      <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+      <Form.Control.Feedback type="invalid">{error?.message}</Form.Control.Feedback>
     </Form.Group>
   );
 }
