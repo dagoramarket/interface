@@ -1,18 +1,13 @@
-import Head from "next/head";
-import SearchBar from "@/components/SearchBar";
+import { getCategories } from "@/utils/categories";
 import HomeView from "@views/HomeView";
 import Navigation from "@views/Navigation";
-import { getCategories } from "@/utils/categories";
+import Head from "next/head";
 
 type Props = {
   categories: string[];
 };
 
 function Home({}: Props): JSX.Element {
-  function onSearch(value: string) {
-    console.log(value);
-  }
-
   return (
     <>
       <Head>
@@ -26,11 +21,7 @@ function Home({}: Props): JSX.Element {
       <body>
         <div className="flex flex-col h-full">
           <Navigation />
-          <HomeView>
-            <SearchBar onSearch={onSearch}>
-              What are you looking for today?
-            </SearchBar>
-          </HomeView>
+          <HomeView />
         </div>
       </body>
     </>
