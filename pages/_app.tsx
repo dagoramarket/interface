@@ -14,7 +14,7 @@ config.autoAddCss = false;
 
 const connectors: [MetaMask, Web3ReactHooks][] = [[metaMask, metaMaskHooks]];
 
-const client = new ApolloClient({
+export const apolloClient = new ApolloClient({
   uri: "https://api.thegraph.com/subgraphs/name/flametuner/dagora",
   cache: new InMemoryCache(),
 });
@@ -24,7 +24,7 @@ function MyApp(pageProps: AppProps) {
     <SSRProvider>
       <Web3ReactProvider connectors={connectors}>
         <MarketProvider>
-          <ApolloProvider client={client}>
+          <ApolloProvider client={apolloClient}>
             <Container {...pageProps} />
           </ApolloProvider>
         </MarketProvider>
