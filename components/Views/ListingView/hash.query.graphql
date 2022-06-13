@@ -1,0 +1,5 @@
+query listingByHash($hash: ID!){
+  activeListings(where: { id:  $hash}) {
+    ...listing
+  }
+}
