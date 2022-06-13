@@ -4,19 +4,24 @@ import {
   DAGORA_TOKEN_ADDRESS,
   DEPLOYED_CHAIN_ID,
   LISTINGMANAGER_ADDRESS,
+  ORDERMANAGER_ADDRESS,
   STAKEMANAGER_ADDRESS,
 } from "@/libs/contract";
 import {
+  ERC20__factory,
   ListingManager,
   ListingManager__factory,
+  OrderManager,
+  OrderManager__factory,
   StakeManager,
   StakeManager__factory,
 } from "@/types/ethers-contracts";
 import { DagoraToken } from "@/types/ethers-contracts/DagoraToken";
 import { DagoraToken__factory } from "@/types/ethers-contracts/factories/DagoraToken__factory";
+import { DagoraLib } from "@/types/ethers-contracts/OrderManager";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import { BigNumber, constants } from "ethers";
+import { BigNumber, constants, ethers } from "ethers";
 import {
   createContext,
   useCallback,
@@ -35,6 +40,11 @@ type MarketContextData = {
   stake: (amount: BigNumber) => Promise<void>;
   unstake: (amount: BigNumber) => Promise<void>;
   createListing: (ipfsHash: string) => Promise<void>;
+  createOrder: (
+    listing: DagoraLib.ListingStruct,
+    amount: BigNumber,
+    token: string
+  ) => Promise<void>;
   updateCategories: (categories: string[]) => void;
 };
 
@@ -46,6 +56,7 @@ export const MarketProvider: React.FC = ({ children }) => {
   const [totalStake, setTotalStake] = useState(BigNumber.from(0));
   const [stakeManager, setStakeManager] = useState<StakeManager>();
   const [listingManager, setListingManager] = useState<ListingManager>();
+  const [orderManager, setOrderManager] = useState<OrderManager>();
   const [dgr, setDGR] = useState<DagoraToken>();
   const [categories, setCategories] = useState<string[]>([]);
   const [hasMinimumStake, setHasMinimumStake] = useState(false);
@@ -76,8 +87,13 @@ export const MarketProvider: React.FC = ({ children }) => {
       LISTINGMANAGER_ADDRESS,
       provider.getSigner()
     );
+    const orderManager = OrderManager__factory.connect(
+      ORDERMANAGER_ADDRESS,
+      provider.getSigner()
+    );
     setStakeManager(stakeManager);
     setListingManager(listingManager);
+    setOrderManager(orderManager);
     setDGR(dagoraToken);
   }, [chainId, provider]);
 
@@ -133,7 +149,7 @@ export const MarketProvider: React.FC = ({ children }) => {
 
     const bn = await provider.getBlockNumber();
     const blocks = Math.floor((60 * 60 * 24 * 30) / BLOCK_TIME); // 30 days in blocks
-    
+
     const listing = {
       ipfsHash,
       seller: account,
@@ -147,6 +163,46 @@ export const MarketProvider: React.FC = ({ children }) => {
     await tx.wait();
   }
 
+  async function createOrder(
+    listing: DagoraLib.ListingStruct,
+    amount: BigNumber,
+    token: string
+  ) {
+    if (!orderManager) return;
+    if (!account) return;
+    if (!provider) return;
+    if (!(provider instanceof Web3Provider)) return;
+
+    const protocolPercentage = await orderManager.PROTOCOL_FEE_PERCENTAGE();
+
+    const protocolFee = protocolPercentage.mul(amount).div(1000);
+
+    const order = {
+      listing: listing,
+      buyer: account,
+      token: token,
+      total: amount,
+      protocolFee: protocolFee,
+      confirmationTimeout: 30,
+      nonce: Date.now(),
+      commissioner: ethers.constants.AddressZero,
+      cashback: 0,
+      commission: 0,
+    };
+    console.log(order);
+    const erc20 = ERC20__factory.connect(token, provider.getSigner());
+    const allowance = await erc20.allowance(account, orderManager.address);
+    if (allowance.lt(BigNumber.from(amount))) {
+      const tx = await erc20.approve(
+        orderManager.address,
+        constants.MaxUint256
+      );
+      await tx.wait();
+    }
+
+    const tx = await orderManager.createOrder(order);
+    await tx.wait();
+  }
   return (
     <MarketContext.Provider
       value={{
@@ -159,6 +215,7 @@ export const MarketProvider: React.FC = ({ children }) => {
         stake,
         unstake,
         createListing,
+        createOrder,
         updateCategories: setCategories,
       }}
     >
