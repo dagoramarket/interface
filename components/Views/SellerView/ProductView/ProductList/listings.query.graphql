@@ -1,6 +1,12 @@
 query sellerListings($seller: String!, $first: Int, $skip: Int){
   activeListings(first: $first, skip: $skip  where: { seller:  $seller}) {
-    id
+    ...listing
+  }
+}
+
+
+fragment listing on ActiveListing {
+  id
     title
     description
     price
@@ -10,5 +16,9 @@ query sellerListings($seller: String!, $first: Int, $skip: Int){
     expirationBlock
     quantity
     allowedTokens
-  }
+    warranty
+    ipfsHash
+    seller {
+      id
+    }
 }
