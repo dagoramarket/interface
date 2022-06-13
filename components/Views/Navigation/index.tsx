@@ -5,6 +5,7 @@ import NavItem from "@/components/Navbar/NavItem";
 import NavLogo from "@/components/Navbar/NavLogo";
 import { useMarketContext } from "@/libs/marketContext";
 import {
+  faMap,
   faShoppingCart,
   faUser,
   faWallet
@@ -15,6 +16,7 @@ export default function Navigation(): JSX.Element {
   return (
     <Navbar>
       <NavLogo href="/">Dagora Market</NavLogo>
+      <NavItem href="/explore" icon={faMap}>Explore</NavItem>
       <NavDropdown title="Categories">
         {categories.map((category, i) => (
           <DropdownItem key={i}>{category}</DropdownItem>
