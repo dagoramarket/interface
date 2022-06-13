@@ -16,7 +16,7 @@ export default function SearchBar({onSearch, children}: Props): JSX.Element {
         <input
           type="text"
           spellCheck="false"
-          className="shadow text-center w-full border border-gray-500 rounded-full indent-5 pr-12 py-2 focus:outline-none focus:border-sky-500 hover:bg-zinc-50 transition transform duration-300"
+          className="glow shadow text-center w-full border border-gray-500 rounded-full indent-5 pr-12 py-2 focus:outline-none focus:border-sky-500 hover:bg-zinc-50 transition transform duration-300 "
           value={value}
           onChange={(e) => setValue(e.target.value)}
         ></input>

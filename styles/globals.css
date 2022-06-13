@@ -30,3 +30,19 @@ a {
 * {
   box-sizing: border-box;
 } */
+
+
+.glow {
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    border-color: green;
+  }
+  to {
+    border-color: red;
+  }
+}
